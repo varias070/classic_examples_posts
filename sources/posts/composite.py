@@ -12,7 +12,10 @@ settings = Setting()
 engine = create_engine(settings.DB_URL)
 session_builder = sessionmaker(engine)
 session = scoped_session(session_builder)
+
 author_repo = database.AuthorRepo(session=session)
+channel_repo = database.ChannelRepo(session=session)
+
 operation = Operation(
     before_start=session.begin,
     after_complete=session.commit,
@@ -24,8 +27,15 @@ author_resource = resource.AuthorResource(
     author_repo=author_repo,
     operation_=operation,
 )
+channel_resource = resource.ChannelResource(
+    channel_repo=channel_repo,
+    operation_=operation,
+)
+
 app = falcon.App()
 app.add_route("/author", author_resource)
+app.add_route("/channel", channel_resource)
+
 register_all(app)
 
 if __name__ == "__main__":

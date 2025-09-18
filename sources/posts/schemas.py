@@ -15,14 +15,26 @@ class Channel(BaseModel):
     posts: List[Post] = []
 
 
+class ChannelForCreate(BaseModel):
+    title: str
+    login_data: str
+    author_id: int
+
+
+class ChannelForSearch(BaseModel):
+    title: str
+    login_data: str
+    id: int
+    posts: List[Post] = []
+
+
 class AuthorForCreate(BaseModel):
     name: str
     phone: Optional[str] = None
-    channels: List[Channel] = []
 
 
 class AuthorForSearch(BaseModel):
     name: Optional[str] = None
     phone: Optional[str] = None
     id: Optional[int] = None
-    channels: List[Channel] = []
+    channels: Optional[bool] = None
