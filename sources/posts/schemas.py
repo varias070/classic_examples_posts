@@ -3,16 +3,15 @@ from pydantic import BaseModel
 
 
 class Post(BaseModel):
-    id: int
+    id: Optional[int] = None
+    title: Optional[str] = None
+    text: Optional[str] = None
+
+
+class PostForCreate(BaseModel):
+    channel_id: int
     title: str
     text: str
-
-
-class Channel(BaseModel):
-    title: str
-    login_data: str
-    id: int
-    posts: List[Post] = []
 
 
 class ChannelForCreate(BaseModel):
@@ -22,9 +21,9 @@ class ChannelForCreate(BaseModel):
 
 
 class ChannelForSearch(BaseModel):
-    title: str
-    login_data: str
-    id: int
+    title: Optional[str] = None
+    login_data: Optional[str] = None
+    id: Optional[int] = None
     posts: List[Post] = []
 
 
