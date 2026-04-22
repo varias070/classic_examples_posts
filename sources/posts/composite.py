@@ -1,48 +1,64 @@
 import falcon
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session
+import psycopg
+
 from classic.operations import Operation
 from classic.falcon_integration import register_all
+from classic.db_tools import Engine, ConnectionPool
 
-from . import database, resource
+from .mapping import mapping
 from .settings import Setting
+from .use_case import (
+    GetAuthor,
+    CreateAuthor,
+    GetChannel,
+    CreateChannel,
+    GetPost
+)
+from .resource import (
+    AuthorResource,
+    ChannelResource,
+    PostResource
+)
 
 
 settings = Setting()
-engine = create_engine(settings.DB_URL)
-session_builder = sessionmaker(engine)
-session = scoped_session(session_builder)
-operation = Operation(
-    before_start=session.begin,
-    after_complete=session.commit,
-    on_cancel=session.rollback,
-    on_finish=session.close,
-)
 
-author_repo = database.AuthorRepo(
-    session=session,
-    operation_=operation,
-)
-channel_repo = database.ChannelRepo(
-    session=session,
-    operation_=operation,
-)
-post_repo = database.PostRepo(
-    session=session,
-    operation_=operation,
-)
+def make_conn():
+    return psycopg.connect(
+        dbname=settings.DB_NAME,
+        user=settings.DB_USER,
+        password=settings.DB_PASSWORD,
+        host=settings.DB_HOST,
+        port=settings.DB_PORT
+    )
 
-author_resource = resource.AuthorResource(
-    author_repo=author_repo,
+
+def get_engine(mapping):
+    pool = ConnectionPool(make_conn)
+    return Engine(
+        pool,
+        templates_dirs=settings.QUERY_REPO_PATH,
+        default_mapping=mapping
+    )
+
+
+engine = get_engine(mapping=mapping)
+operation = Operation(engine)
+
+
+author_resource = AuthorResource(
     operation_=operation,
+    get_author=GetAuthor(engine=engine),
+    create_author=CreateAuthor(engine=engine)
 )
-channel_resource = resource.ChannelResource(
-    channel_repo=channel_repo,
+channel_resource = ChannelResource(
     operation_=operation,
+    get_channel=GetChannel,
+    create_channel=CreateChannel
 )
-post_resource = resource.PostResource(
-    post_repo=post_repo,
+post_resource = PostResource(
     operation_=operation,
+    get_post=GetPost
 )
 
 app = falcon.App()

@@ -1,11 +1,5 @@
-from typing import List, Optional
+from typing import Optional
 from pydantic import BaseModel
-
-
-class Post(BaseModel):
-    id: Optional[int] = None
-    title: Optional[str] = None
-    text: Optional[str] = None
 
 
 class PostForCreate(BaseModel):
@@ -21,10 +15,9 @@ class ChannelForCreate(BaseModel):
 
 
 class ChannelForSearch(BaseModel):
+    id:  int
     title: Optional[str] = None
-    login_data: Optional[str] = None
-    id: Optional[int] = None
-    posts: List[Post] = []
+    posts: list = []
 
 
 class AuthorForCreate(BaseModel):
@@ -36,4 +29,3 @@ class AuthorForSearch(BaseModel):
     name: Optional[str] = None
     phone: Optional[str] = None
     id: Optional[int] = None
-    channels: Optional[bool] = None

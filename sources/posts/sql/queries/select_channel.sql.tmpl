@@ -1,0 +1,16 @@
+SELECT
+    channel.id as channel__id,
+    channel.title as channel__title,
+    channel.login_data as channel__login_data,
+    post.id as post__id,
+    post.title as post__title,
+    post.text as author__text
+FROM post
+INNER JOIN channel ON post.channel_id = channel.id
+WHERE true
+    {% if post_id %}
+      AND post.channel_id = {{ post_id }}
+    {% endif %}
+    {% if post_title %}
+      AND post.title = {{ post_title }}
+    {% endif %}

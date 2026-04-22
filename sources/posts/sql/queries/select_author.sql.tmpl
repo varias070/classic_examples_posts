@@ -1,0 +1,19 @@
+SELECT
+    channel.id as channel__id,
+    channel.title as channel__title,
+    channel.login_data as channel__login_data,
+    author.id as author__id,
+    author.name as author__name,
+    author.phone as author__phone
+FROM channel
+INNER JOIN author ON channel.author_id = author.id
+WHERE true
+    {% if author_id %}
+      AND channel.author_id = {{ author_id }}
+    {% endif %}
+    {% if author_name %}
+      AND author.name = {{ author_name }}
+    {% endif %}
+    {% if author_phone %}
+      AND author.phone = {{ author_phone }}
+    {% endif %}
