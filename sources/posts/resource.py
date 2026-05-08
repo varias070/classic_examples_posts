@@ -20,7 +20,6 @@ class AuthorResource:
     def on_get(self, req, resp):
         params = req.params
         author = self.get_author.run(params)
-        print(type(author))
         print(author)
         resp.media = author
 

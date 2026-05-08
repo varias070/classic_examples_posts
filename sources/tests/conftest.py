@@ -2,6 +2,7 @@ import falcon
 import psycopg
 import pytest
 from classic.db_tools import ConnectionPool, Engine
+from classic.falcon_integration import register_all
 from classic.operations import Operation
 from falcon import testing
 
@@ -66,6 +67,7 @@ def get_app(author_resource):
     app.add_route("/author", author_resource)
     # app.add_route("/channel", channel_resource)
     # app.add_route("/post", post_resource)
+    register_all(app)
     return app
 
 

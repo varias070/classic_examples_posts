@@ -7,19 +7,22 @@ from posts.validators import (
     ChannelForSearch,
     ChannelForCreate
 )
+from pydantic import TypeAdapter
 
 
 class GetAuthor:
     engine: Engine
+    validator = TypeAdapter
 
     def __init__(self, engine):
         self.engine = engine
 
     def run(self, data):
         filter_obj = AuthorForSearch.model_validate(data)
+        print(filter_obj)
         with self.engine:
             query = self.engine.query_from("select_author.sql.tmpl").map_to(Author)
-            return query.one(**filter_obj.__dict__)
+            return query.one(filter_obj)
 
 
 class CreateAuthor:

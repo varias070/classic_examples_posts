@@ -1,5 +1,6 @@
 import falcon
 import psycopg
+import logging
 
 from classic.operations import Operation
 from classic.falcon_integration import register_all
@@ -20,6 +21,8 @@ from .resource import (
     PostResource
 )
 
+
+logging.getLogger("classic-db-tools").setLevel(logging.DEBUG)
 
 settings = Setting()
 

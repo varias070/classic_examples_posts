@@ -8,12 +8,12 @@ SELECT
 FROM channel
 INNER JOIN author ON channel.author_id = author.id
 WHERE true
-    {% if author_id %}
-      AND channel.author_id = {{ author_id }}
+    {% if id %}
+      AND channel.author_id = {{ id }}
     {% endif %}
-    {% if author_name %}
-      AND author.name = {{ author_name }}
+    {% if name %}
+      AND author.name = {{ name }}
     {% endif %}
-    {% if author_phone %}
-      AND author.phone = {{ author_phone }}
+    {% if phone %}
+      AND author.phone = {{ phone }}
     {% endif %}

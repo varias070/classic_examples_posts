@@ -11,10 +11,12 @@ def test_author_resource(client):
     author_id = create_author_result.json
     result = client.simulate_get(
         "/author",
-        params={"id": author_id},
+        params={"name": "Auto Test Author"},
     )
 
     assert result.status_code == 200
+    print(author_id)
+    print(result.json)
     assert result.json == {
         "id": author_id,
         "name": "Auto Test Author",
