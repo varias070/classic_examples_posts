@@ -13,12 +13,14 @@ from .use_case import (
     CreateAuthor,
     GetChannel,
     CreateChannel,
-    GetPost
+    GetPost,
+    CreateRental
 )
 from .resource import (
     AuthorResource,
     ChannelResource,
-    PostResource
+    PostResource,
+    RentalResource
 )
 
 
@@ -56,18 +58,23 @@ author_resource = AuthorResource(
 )
 channel_resource = ChannelResource(
     operation_=operation,
-    get_channel=GetChannel,
-    create_channel=CreateChannel
+    get_channel=GetChannel(engine=engine),
+    create_channel=CreateChannel(engine=engine)
 )
 post_resource = PostResource(
     operation_=operation,
-    get_post=GetPost
+    get_post=GetPost(engine=engine)
+)
+rental_resource = RentalResource(
+    operation_=operation,
+    create_rental=CreateRental(engine=engine)
 )
 
 app = falcon.App()
 app.add_route("/author", author_resource)
 app.add_route("/channel", channel_resource)
 app.add_route("/post", post_resource)
+app.add_route("/rental", rental_resource)
 
 register_all(app)
 

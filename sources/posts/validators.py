@@ -1,3 +1,5 @@
+import datetime
+
 from typing import Optional
 from pydantic import BaseModel
 
@@ -29,3 +31,16 @@ class AuthorForSearch(BaseModel):
     name: Optional[str] = None
     phone: Optional[str] = None
     id: Optional[int] = None
+
+
+class Item(BaseModel):
+    book: int
+    quantity: int
+    price: float
+
+
+class Rental(BaseModel):
+    items: list[Item]
+    start_date: datetime.date
+    end_date: datetime.date
+    reader: int

@@ -6,9 +6,9 @@ from posts.use_case import (
     GetAuthor,
     CreateChannel,
     GetChannel,
-    GetPost
+    GetPost,
+    CreateRental
 )
-from posts.validators import ChannelForCreate
 
 
 @component
@@ -20,7 +20,6 @@ class AuthorResource:
     def on_get(self, req, resp):
         params = req.params
         author = self.get_author.run(params)
-        print(author)
         resp.media = author
 
     @operation
@@ -44,8 +43,7 @@ class ChannelResource:
     @operation
     def on_post(self, req, resp):
         params = req.media
-        channel = ChannelForCreate.model_validate(params)
-        channel_id = self.create_channel.run(channel)
+        channel_id = self.create_channel.run(params)
         resp.media = channel_id
 
 
@@ -58,3 +56,14 @@ class PostResource:
         post_id = req.params
         post = self.get_post.run(post_id)
         resp.media = post
+
+
+@component
+class RentalResource:
+    create_rental: CreateRental
+
+    @operation
+    def on_post(self, req, resp):
+        params = req.media
+        rental_id = self.create_rental.run(data=params)
+        resp.media = rental_id

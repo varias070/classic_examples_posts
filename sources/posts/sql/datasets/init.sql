@@ -5,7 +5,7 @@ INSERT INTO author (name, phone) VALUES
     ('Анна Ахматова', '+7 900 456-78-90'),
     ('Борис Гребенщиков', '+7 900 567-89-01');
 
-INSERT INTO reader (name, phone) VALUES
+ INTO reader (name, phone) VALUES
     ('Иван Петров', '+7 911 111-22-33'),
     ('Мария Сидорова', '+7 911 222-33-44'),
     ('Дмитрий Кузнецов', '+7 911 333-44-55'),
